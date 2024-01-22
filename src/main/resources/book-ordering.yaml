@@ -1,0 +1,114 @@
+openapi: 3.0.1
+info:
+  title: Book mircro service
+  description: Micro service to order a book
+  contact:
+    email: supportm@bp.org
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090
+tags:
+  - name: book
+    description: Book which you can order
+paths:
+  /book:
+    post:
+      tags:
+        - book
+      summary: ordering of a book
+      operationId: orderBook
+      requestBody:
+        description: Details of book which you are ordering
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orderBookRequest'
+        required: true
+      responses:
+        400:
+          description: Problem during processing of the ordering
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    Item:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        price:
+          type: number
+
+    OrderingInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        cost:
+          type: number
+    Delivery:
+      type: object
+      properties:
+        company:
+          type: string
+        date:
+          type: string
+          format: date-time
+    PaymentCard:
+      type: object
+      properties:
+        name:
+          type: string
+        validTo:
+          type: string
+        number:
+          type: string
+    OrderRoomRequest:
+      type: object
+      properties:
+        person:
+          $ref: '#/components/schemas/Person'
+        item:
+          $ref: '#/components/schemas/Item'
+    OrderDeliveryRequest:
+      type: object
+      properties:
+        person:
+          $ref: '#/components/schemas/Person'
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+    orderBookRequest:
+      type: object
+      properties:
+        person:
+          $ref: '#/components/schemas/Person'
+        item:
+          $ref: '#/components/schemas/Item'
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+        paymentCard:
+          $ref: '#/components/schemas/PaymentCard'
+    ExceptionResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+
